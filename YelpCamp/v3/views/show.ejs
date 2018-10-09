@@ -1,0 +1,19 @@
+<% include partials/header %>
+
+<h1><%= campground.name %></h1>
+
+<img src="<%= campground.image %>">
+
+<p> <%= campground.description %></p>
+
+<!-- Loop through each comment of the campground and create a paragraph for every one  -->
+<% campground.comments.forEach(function(comment){ %>
+    <p>
+        <strong><%= comment.author %></strong> - <%= comment.text%>
+    </p>
+
+<% }); %>
+
+<a href="/">Back to the landing page</a>
+
+<% include partials/footer %>

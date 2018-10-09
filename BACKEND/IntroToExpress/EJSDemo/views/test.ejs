@@ -1,0 +1,14 @@
+<% include partials/header %>
+
+
+<h1>You've been testing a <%=thingVar%></h1>
+
+<% if (thingVar.toLowerCase() === "car"){ %>
+        <p>Good choice, cars are the best!</p>
+<% } else { %>
+        <p>Bad choice! You should have said car!</p>
+<% } %>
+
+<p>ps. this is test.ejs file</p>
+
+<% include partials/footer %>

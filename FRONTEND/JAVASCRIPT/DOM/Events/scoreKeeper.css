@@ -1,0 +1,14 @@
+body {
+}
+
+.scoreboard {
+	color: red;
+	padding-top: 5%;
+	width: 25%;
+	margin: auto;
+	text-align: center;
+}
+
+.winner {
+	color: green;
+}

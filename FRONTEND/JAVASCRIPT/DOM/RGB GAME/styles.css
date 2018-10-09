@@ -1,0 +1,88 @@
+body {
+	background-color: #232323;
+	margin: 0;
+	font-family: "Avenir", "sans-serif";
+}
+
+button {
+	color: steelblue;
+	border: none;
+	background-color: #FFFFFF;
+	text-transform: uppercase;
+	height: 30px;
+	font-weight: 700;
+	font-size: 125%;
+	letter-spacing: 1px;
+	/* Transition creates the fade effect */
+	transition: all 0.3s;
+	--webkit-transition: transition: all 0.3s;
+	-mox-transition: transition: all 0.3s;
+	/* Removes the outline from button when clicked	 */
+	outline: none;
+}
+
+button:hover {
+	color: #FFFFFF;
+	background-color: steelblue;
+}
+
+h1 {
+	text-align: center;
+	background-color: steelblue;
+	color: #FFFFFF;
+	margin: 0;
+	font-weight: normal;
+	text-transform: uppercase;
+	line-height: 1.1;
+	padding: 20px 0;
+	transition: background 0.6s;
+	--webkit-transition: background 0.6s;
+	-mox-transition: background 0.6s;
+}
+
+.square {
+  width: 30%;
+  margin: 1.66%;
+  float: left;
+	padding-bottom: 30%;
+	background-color: #FFFF00;
+	/* Border radius gives the rounded edges	 */	
+	border-radius: 20%;
+	/* Transition has the extra lines for browser support	 */
+	transition: background 0.6s;
+	--webkit-transition: background 0.6s;
+	-mox-transition: background 0.6s;
+}
+
+.selected {
+	color: #FFFFFF;
+	background: steelblue;
+}
+
+#headingTargetRGB {
+	font-size: 200%;
+}
+
+#instruction {
+	/* Makes the space for instruction text ready */
+	display: inline-block;
+	
+	color: steelblue;
+	width: 20%;
+	font-weight: 700;
+	font-size: 125%;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+#container {
+	max-width: 600px;
+	/* margin 0 top and bottom, auto left and right centers the container and both sides are same size	 */
+	margin: 20px auto;
+}
+
+#stripe {
+	background-color: #FFFFFF;
+	height: 30px;
+	text-align: center;
+}

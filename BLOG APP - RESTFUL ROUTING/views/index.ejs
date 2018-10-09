@@ -1,0 +1,32 @@
+<% include partials/header %>
+
+<div class="ui main text container">
+    <div class="ui huge header">RESTful routing blog practice</div>
+    <div class="ui top attached segment">
+        <div class="ui divided items">
+            <% allBlogPosts.forEach(function(blog){ %>
+            <div class="item">
+                <a href="<%= blog.image %>" class="image">
+                    <img src="<%= blog.image %>">
+                </a>
+                <div class="content">
+                    <a class="header" href="/blogs/<%= blog._id %>"><%= blog.title %></a>
+                    <div class="meta">
+                        <span> <%= blog.created.toDateString() %> </span>
+                    </div>
+                    <div class="description">
+                        <p><%- blog.body.substring(0, 100) %>...</p>
+                    </div>
+                    <div class="extra">
+                        <a class="ui floated blue medium button" href="/blogs/<%= blog._id %>">
+                            Read more
+                        </a>
+                    </div>    
+                </div>
+            </div>    
+            <% }); %>
+        </div>
+    </div>
+</div>    
+
+<% include partials/footer %>

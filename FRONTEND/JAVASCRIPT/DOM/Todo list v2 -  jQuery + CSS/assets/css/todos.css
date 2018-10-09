@@ -1,0 +1,86 @@
+body {
+	font-family: 'Roboto', sans-serif;
+	background: #34e89e;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #0f3443, #34e89e);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	/* The gradient background is from uigradients.com */
+}
+
+h1 {
+	background: #2980b9;
+	color: white;
+	margin: 0;
+	padding: 10px 20px;
+	text-transform: uppercase;
+	font-size: 24px;
+	font-weight: normal;
+}
+
+li {
+	background: #ffffff;
+	height: 40px;
+	line-height: 40px;
+	color: #666;
+}
+
+/* every other li element */
+li:nth-child(2n) {
+	background: #f7f7f7;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+input {
+	font-size: 18px;
+	background: #f7f7f7;
+	width: 100%;
+	padding: 13px 13px 13px 20px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	color: #2980b9;
+	border: 1px solid rgba(0,0,0,0);
+}
+
+input:focus {
+	background: #ffffff;
+	border: 3px solid #2980b9;
+	outline: none;
+}
+
+.doneToDo {
+	color: #a6a6a6;
+	text-decoration: line-through;
+}
+
+.fa-plus {
+	float: right;
+}
+
+.delete {
+	width: 0px;
+	height: 40px;
+	margin-right: 20px;
+	text-align: center;
+	color: #ffffff;
+	background: #e74c3c;
+	display: inline-block;
+	opacity: 0;
+}
+
+li:hover .delete {
+	width: 40px;
+	transition: width 0.3s;
+	opacity: 1;
+}
+
+#container {
+	background: #f7f7f7;
+	top: 50%;
+	max-width: 360px;
+	margin: 100px auto;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}

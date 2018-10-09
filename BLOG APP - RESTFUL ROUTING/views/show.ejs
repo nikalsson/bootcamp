@@ -1,0 +1,23 @@
+<% include partials/header %>
+
+<div class="ui main text container">
+    
+    <div class="ui huge header"><%= blog.title %></div>
+    
+    <div class="ui top attached segment">
+        <div class="item">
+            <img class="ui centered rounded image" src="<%= blog.image %>">
+            <div class="content">
+                <!-- Using .toDateString to display the date in different format -->
+                <span> <%= blog.created.toDateString() %> </span>
+            </div>
+            <div class="description">
+                <!-- When using < %- instead of %= we can render HTML code in the paragraph -->
+                <p> <%- blog.body %></p>
+            </div>
+            <a class="ui huge button green inlinebutton" href="/blogs/<%= blog._id %>/edit">EDIT</a>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer %>

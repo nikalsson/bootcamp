@@ -1,0 +1,18 @@
+button {
+	position: relative;
+	left: 50%;
+	margin-top: 20%;
+}
+
+.pinkBG {
+	background-color: pink;
+}
+
+.hoverListItem {
+	color: grey;
+}
+
+.text-strike {
+  text-decoration: line-through;
+	opacity: 0.5;
+}
