@@ -37,6 +37,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// A middleware to pass in username information to every route, req.user comes from passport module
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    console.log(req.user);
+    next();
+});
+
+
 
 // Set up a landing page
 app.get("/", function(req, res){
@@ -98,7 +106,7 @@ app.get("/campgrounds/:id", function(req, res){
 // COMMENTS ROUTE
 // ==================
 
-app.get("/campgrounds/:id/comments/new", function(req, res){
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(err, campground){
         if(err){
             console.log(err);
@@ -109,7 +117,7 @@ app.get("/campgrounds/:id/comments/new", function(req, res){
 });
 
 
-app.post("/campgrounds/:id/comments", function(req, res){
+app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
     // Find a campground using ID
     Campground.findById(req.params.id, function(err, campground){
         if(err){
@@ -157,6 +165,37 @@ app.post('/register', function(req, res){
         }
     });
 });
+
+// show the login form
+app.get('/login', function(req, res){
+    res.render('login');
+});
+
+// handle the login POST
+// app.post(route, middleware, callback function)
+app.post('/login', passport.authenticate('local', {
+        successRedirect: '/campgrounds',
+        failureRedirect: '/login'
+    })
+);
+
+// logout route, logout() comes from passport module
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/campgrounds');
+});
+
+
+
+// middleware function for checking if user is logged in, request, response, next 
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    } else {
+        console.log('Was not logged in');
+        res.redirect('/login');
+    }
+}
 
 // Starts a UNIX socket and listens for connections on the specified host and port.  
 app.listen(process.env.PORT, process.env.IP, function(){

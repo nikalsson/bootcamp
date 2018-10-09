@@ -16,3 +16,14 @@
 - Add description to the campground model
 - Show db.collection.drop()
 - Add a show/route template
+
+# v5 
+* Add a seeds.js file
+* Run the seeds file every time the server starts
+* Add the Comment model!
+* Make our errors go away!
+* Display comments on campground show page
+
+# v6 added user authentication, login, register and navbar changes
+- installed passport and express-session
+
