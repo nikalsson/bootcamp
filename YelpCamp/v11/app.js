@@ -10,6 +10,7 @@ var express         = require("express"),
     passport        = require("passport"),
     LocalStrategy   = require("passport-local"),
     expressSession  = require("express-session"),
+    flash           = require('connect-flash'),
     methodOverride  = require("method-override");
     
 // Require the route files
@@ -19,8 +20,11 @@ var commentRoutes       = require('./routes/comments'),
     
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Needed for flash messages
+app.use(flash());
+
 // Connect mongoose module to MongoDB database
-mongoose.connect("mongodb://localhost:27017/yelp_camp_v4", { useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/yelp_camp_v11", { useNewUrlParser: true});
 
 // Set view engine to ejs, no need to write the file names later
 app.set("view engine", "ejs");
@@ -46,10 +50,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// A middleware to pass in username information to every route, req.user comes from passport module
+// A middleware to pass in information (currentUser, error & success flash messages) to every route, req.user comes from passport module
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
-    console.log(req.user);
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
     next();
 });
 

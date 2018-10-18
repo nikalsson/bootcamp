@@ -8,8 +8,8 @@ var middleware = require('../middleware/');
 router.get("/", function(req, res){
     // route to campgrounds page, get all the campgrounds from the DB. If error, print it, otherwise send them to campground.ejs
     Campground.find({}, function(err, allCampgrounds){
-        if (err){
-            console.log(err);
+        if (err){            
+            req.flash('error', err.message);
         } else {
             // render index.ejs - pass 'campgrounds' to it
             res.render("campgrounds/index", {campgrounds: allCampgrounds});  
@@ -26,6 +26,7 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
 router.post("/", middleware.isLoggedIn, function(req, res){
     // Get the inputs named 'name' and 'image' from the form. Author comes from req.user, works because user has to be signed in by isLoggedIn
     var name = req.body.name;
+    var price = req.body.price;
     var image = req.body.image;
     var desc = req.body.description;
     var author = {
@@ -33,13 +34,14 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         username: req.user.username,
     };
     // Create an object of the inputs and push them to the array, redirect to the /campgrounds route
-    var newCampground = {name: name, image: image, description: desc, author: author};
+    var newCampground = {name: name, price: price, image: image, description: desc, author: author};
     console.log(newCampground);
     // Create a new campground and save to the DB
     Campground.create(newCampground, function(err, newlyCreated){
         if (err){
-            console.log(err);
+            req.flash('error', err.message);
         } else {
+            req.flash('success', 'Campground added!');
             res.redirect("/campgrounds");
         }
     });
@@ -50,7 +52,7 @@ router.get("/:id", function(req, res){
     // finds a campground with the provided ID, also populate with associated comments
     Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
         if (err){
-            console.log(err);
+            req.flash('error', err.message);
         } else {
             // Render the show template with the found campground
             res.render("campgrounds/show", {campground: foundCampground});
@@ -61,8 +63,11 @@ router.get("/:id", function(req, res){
 // EDIT - edit a specific campground
 router.get('/:id/edit', middleware.checkCampgroundOwnership, function(req, res){
     Campground.findById(req.params.id, function(err, foundCampground){
-        // Error not handled because the error from findById would already arise in the middleware checkCampgroundOwnership
-        res.render('campgrounds/edit', {campground: foundCampground});
+        if (err) {
+            req.flash('error', err.message);
+        } else {
+            res.render('campgrounds/edit', {campground: foundCampground});    
+        }
     });
 });
 
@@ -71,9 +76,10 @@ router.put('/:id', middleware.checkCampgroundOwnership, function(req, res){
     // Find and update the blog with a single method, arguments are ID to find by - the new data - callback function
     Campground.findOneAndUpdate(req.params.id, req.body.campgroundUpdateForm, function(err, updatedCampground){
         if (err){
-            console.log(err);
-            res.redirect('/');
+            req.flash('error', err.message);
+            res.redirect('back');
         } else {
+            req.flash('success', 'Campground edited!');
             res.redirect('/campgrounds/' + req.params.id);
         }
     });
@@ -83,9 +89,10 @@ router.put('/:id', middleware.checkCampgroundOwnership, function(req, res){
 router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res){
     Campground.findOneAndDelete(req.params.id, function(err){
         if (err) {
-            console.log(err);
-            res.redirect('/');
+            req.flash('error', err.message);
+            res.redirect('back');
         } else {
+            req.flash('success', 'Campground deleted!');
             res.redirect('/campgrounds/');
         }
     });

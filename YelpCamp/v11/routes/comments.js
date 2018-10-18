@@ -12,7 +12,7 @@ var middleware = require('../middleware/');
 router.get("/new", middleware.isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(err, campground){
         if(err){
-            console.log(err);
+            req.flash('error', err.message);
         } else {
             res.render("comments/new", {campground: campground});
         }    
@@ -24,13 +24,13 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     // Find a campground using ID
     Campground.findById(req.params.id, function(err, campground){
         if(err){
-            console.log(err);
+            req.flash('error', err.message);
             res.redirect("/campgrounds");
         } else {
             // Create a new comment
             Comment.create(req.body.comment, function(err, comment){
                 if(err){
-                    console.log(err);
+                    req.flash('error', err.message);
                     res.redirect("/campgrounds/" + campground._id);
                 } else {
                     // Add username and ID to the comment - isLoggedIn middleware ensures that user is logged in. That's why req.user works.
@@ -41,6 +41,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                     // Connect the comment to the campground, save and redirect to show page
                     campground.comments.push(comment);
                     campground.save();
+                    req.flash('success', 'Comment created!');
                     res.redirect("/campgrounds/" + campground._id);
                 }
             });
@@ -52,6 +53,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 router.get('/:comment_id/edit', middleware.checkCommentOwnership, function(req, res){
     Comment.findById(req.params.comment_id, function(err, foundComment){
         if (err) {
+            req.flash('error', err.message);
             res.redirect('back');
         } else {
         res.render('comments/edit', {campground_id: req.params.id, comment: foundComment});
@@ -64,8 +66,10 @@ router.put('/:comment_id', middleware.checkCommentOwnership, function(req, res){
     // I don't understand why {_id: is required to make this work!
     Comment.findOneAndUpdate({_id: req.params.comment_id}, req.body.comment, function(err, updatedComment){
         if (err) {
+            req.flash('error', err.message);
             res.redirect('/campgrounds');
         } else {
+            req.flash('success', 'Comment edited!');
             res.redirect('/campgrounds/' + req.params.id);
         }
     });
@@ -75,9 +79,10 @@ router.put('/:comment_id', middleware.checkCommentOwnership, function(req, res){
 router.delete('/:comment_id', middleware.checkCommentOwnership, function(req, res){
     Comment.findOneAndDelete({_id: req.params.comment_id}, function(err){
         if (err) {
-            console.log(err);
+            req.flash('error', err.message);
             res.redirect('back');
         } else {
+            req.flash('success', 'Comment deleted!');
             res.redirect('/campgrounds/' + req.params.id);
         }
     });    
