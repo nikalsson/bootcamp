@@ -26,6 +26,7 @@ app.use(flash());
 // Connect mongoose module to MongoDB database
 mongoose.connect("mongodb://localhost:27017/yelp_camp_v11", { useNewUrlParser: true});
 
+
 // Set view engine to ejs, no need to write the file names later
 app.set("view engine", "ejs");
 
