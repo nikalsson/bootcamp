@@ -25,9 +25,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Needed for flash messages
 app.use(flash());
 
-// Connect mongoose module to MongoDB database
-mongoose.connect("mongodb://localhost:27017/yelp_camp_v11", { useNewUrlParser: true});
-
+console.log(process.env.DATABASEURL);
+var url = process.env.DATABASEURL || 'mongodb://localhost:27017/yelp_camp_v11'; // Set up a variable in case DATABASEURL environment gets messed up
+// Connect mongoose module to MongoDB database, set in terminal (command export) - the address is therefore hidden and development & live dbs can be different
+mongoose.connect(url, { useNewUrlParser: true}); // the DATABASEURL is set different in Heroku and c9 
 
 // Set view engine to ejs, no need to write the file names later
 app.set("view engine", "ejs");
