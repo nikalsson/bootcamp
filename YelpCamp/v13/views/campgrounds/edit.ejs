@@ -40,7 +40,7 @@
     
 
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibmlrYWxzc29uIiwiYSI6ImNqbnloaTZ0NjBjcmYzcnEwdDQ1ZG55aTUifQ.qnWCtcqiLN8i_wl9XvfyCA';
+        mapboxgl.accessToken = '<%=process.env.MAPBOXACCESS%>';
         var map = new mapboxgl.Map({
             container: 'mapHigher',
             style: 'mapbox://styles/mapbox/streets-v9',

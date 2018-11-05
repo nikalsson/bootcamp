@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Needed for flash messages
 app.use(flash());
 
-console.log(process.env.DATABASEURL);
+
 var url = process.env.DATABASEURL || 'mongodb://localhost:27017/yelp_camp_v11'; // Set up a variable in case DATABASEURL environment gets messed up
 // Connect mongoose module to MongoDB database, set in terminal (command export) - the address is therefore hidden and development & live dbs can be different
 mongoose.connect(url, { useNewUrlParser: true}); // the DATABASEURL is set different in Heroku and c9 
@@ -41,8 +41,11 @@ app.use(methodOverride("_method"));
 
 // seedDB(); // seed the database
 
-// passes locals to all routes
+// passes some to all routes with .locals
 app.locals.moment = require("moment");
+// hiding the access token with process.env
+app.locals.MAPBOXACCESS = process.env.MAPBOXACCESS;
+
 
 
 // PASSPORT CONFIG
