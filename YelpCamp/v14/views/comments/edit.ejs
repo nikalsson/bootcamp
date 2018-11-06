@@ -1,0 +1,19 @@
+<% include ../partials/header %>
+
+    <div class="row">
+        <h1 style="text-align: center;">Edit comment</h1>
+        <div style="width: 50%; margin: 25px auto; ">
+            <!--    ?_method=PUT" method="POST" it is this way because HTML doesn't support PUT method, need to use Method-Override module    -->
+            <form action="/campgrounds/<%= campground_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="comment[text]" value="<%= comment.text %>">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-default btn-block btn-primary">Submit edit</button>
+                </div>
+            </form> 
+            <a href="/campgrounds">Go back to campgrounds</a>
+        </div>
+    </div>
+
+<% include ../partials/footer %>
