@@ -36,6 +36,7 @@ middlewareObject.checkCommentOwnership = function (req, res, next){
             }
         });
     } else {
+        console.log('Unauthorized attempt!');
         res.redirect('back');
     }    
 };

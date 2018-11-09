@@ -39,7 +39,7 @@ app.use(express.static(__dirname + "/public"));
 // Configure Method-Override to look for string "_method"
 app.use(methodOverride("_method"));
 
-// seedDB(); // seed the database
+seedDB(); // seed the database
 
 // passes some to all routes with .locals
 app.locals.moment = require("moment");

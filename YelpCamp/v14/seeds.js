@@ -1,61 +1,71 @@
 var mongoose    = require("mongoose"),
     Campground  = require("./models/campground"),
     Comment     = require("./models/comment");
-    
 
-var campData = [
-        {
-            name: "Test camp 1",
-            image: "https://images.unsplash.com/photo-1534880606858-29b0e8a24e8d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=890e75a342e46be601584be1318ba5db&auto=format&fit=crop&w=500&q=60",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+var seeds = [
+        { 
+          author : { "id" : "5be170c4cc30e614bb1b4d56", "username" : "Sirkka" },
+          name: 'Test camp',
+          price: '100',
+          image: 'https://res.cloudinary.com/duvxdwcmt/image/upload/v1541765669/hjfsguppyk9prjgjqrzv.jpg',
+          imageId: 'wf399cwhvdpwkcheu1vl',
+          description: 'Aliquam in metus malesuada, viverra arcu at, bibendum leo. Nulla in efficitur mi. Vestibulum vel lacus a ante lacinia gravida ut eget purus. Nulla sollicitudin sem elit, non pharetra lorem dictum sed. Duis sollicitudin accumsan odio eu pharetra. Ut sit amet tellus a libero accumsan tincidunt. Fusce sed vestibulum urna. Etiam in ex sit amet odio hendrerit tempor.',
+          lat: 53.34156417008356,
+          lng: 26.281083811475128,
+          createdAt : ("2018-11-09T09:03:20.781Z"),
         },
-        {
-            name: "Test camp 2",
-            image: "https://images.unsplash.com/photo-1533632359083-0185df1be85d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=51f7a26d1f207240dafd6cd80bf4c4a0&auto=format&fit=crop&w=500&q=60",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        
+        { 
+          author : { "id" : "5be170c4cc30e614bb1b4d56", "username" : "Sirkka" },
+          name: 'Mega camp',
+          price: '1200',
+          image: 'https://res.cloudinary.com/duvxdwcmt/image/upload/v1541765830/s1nnhxfe9agvafvmnfoi.jpg',
+          imageId: 'wf399cwhvdpwkcheu1vl',
+          description: 'Aliquam in metus malesuada, viverra arcu at, bibendum leo. Nulla in efficitur mi. Vestibulum vel lacus a ante lacinia gravida ut eget purus. Nulla sollicitudin sem elit, non pharetra lorem dictum sed. Duis sollicitudin accumsan odio eu pharetra. Ut sit amet tellus a libero accumsan tincidunt. Fusce sed vestibulum urna. Etiam in ex sit amet odio hendrerit tempor.',
+          lat: -67.34156417008356,
+          lng: 10.281083811475128,
+          createdAt : ("2018-11-09T09:03:20.781Z"),
         },
-        {
-            name: "Test camp 3",
-            image: "https://images.unsplash.com/photo-1528433556524-74e7e3bfa599?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a4479c0b22e5c8a8ed5577c39f63b27b&auto=format&fit=crop&w=500&q=60",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        
+        { 
+          author : { "id" : "5be170c4cc30e614bb1b4d56", "username" : "Sirkka" },
+          name: 'Ultimate camp',
+          price: '250',
+          image: 'https://res.cloudinary.com/duvxdwcmt/image/upload/v1541766035/jqmicwmotm9ivcx8hufa.jpg',
+          imageId: 'wf399cwhvdpwkcheu1vl',
+          description: 'Aliquam in metus malesuada, viverra arcu at, bibendum leo. Nulla in efficitur mi. Vestibulum vel lacus a ante lacinia gravida ut eget purus. Nulla sollicitudin sem elit, non pharetra lorem dictum sed. Duis sollicitudin accumsan odio eu pharetra. Ut sit amet tellus a libero accumsan tincidunt. Fusce sed vestibulum urna. Etiam in ex sit amet odio hendrerit tempor.',
+          lat: -67.34156417008356,
+          lng: 10.281083811475128,
+          createdAt : ("2018-11-09T09:03:20.781Z"),
         },
     ];
     
-function seedDB(){
-    // Remove all campgrounds
-    Campground.deleteMany({}, function(err){
-        if (err){
-            console.log (err);
-    //     } else {
-    //         console.log("Removed campgrounds!");
-            
-    //         // Add a few campgrounds
-    //         campData.forEach(function(seed){
-    //             Campground.create(seed, function(err, campground){
-    //               if (err){
-    //                   console.log(err);
-    //               } else {
-    //                     console.log("Created a campground!");
-                          
-    //                     // Create a comment
-    //                     Comment.create(
-    //                         {
-    //                           text: "test comment 1",
-    //                           author: "dummy author",
-    //                         }, function(err, comment){
-    //                             if (err){
-    //                                 console.log(err);
-    //                             } else {
-    //                                  campground.comments.push(comment);
-    //                                  campground.save();
-    //                                  console.log("Created a new comment!");
-    //                             }
-    //                         });
-    //               }
-    //             });
-    //         });
+// seedDB removes all campgrounds and comments from database and creates new ones, good for testing
+
+async function seedDB(){
+    try {
+        await Campground.remove({});
+        await Comment.remove({});
+
+        for (const seed of seeds) { // loops through all, can be used instead of forEach
+        var campground = await Campground.create(seed);
+        var comment = await Comment.create(
+            {
+              text : "This is an example comment left by an user.", 
+              createdAt : ("2018-11-09T11:56:29.900Z"),
+              author : 
+                {
+                id : ("5be170c4cc30e614bb1b4d56"),
+                username : "Sirkka" 
+                }
+            }
+        );
+        campground.comments.push(comment);
+        campground.save();
         }
-    });
+    } catch(err) {
+        console.log(err);
+    }
 }    
 
 module.exports = seedDB;

@@ -7,7 +7,7 @@
         <h1 style="text-align: center;">Edit <%= campground.name %></h1>
         <div style="width: 50%; margin: 25px auto; ">
             <!--    ?_method=PUT" method="POST" it is this way because HTML doesn't support PUT method, need to use Method-Override module    -->
-            <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+            <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <input class="form-control" type="text" name="campgroundUpdateForm[name]" value="<%= campground.name %>">
                 </div>
@@ -16,16 +16,18 @@
                     <input class="form-control" type="number" name="campgroundUpdateForm[price]" min="0.00" step="0.01" value="<%= campground.price %>">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="campgroundUpdateForm[image]" value="<%= campground.image %>">
+                    <label for="image">Image</label>
+                    <!-- name is not like in others campgroundUpdateForm[], doesn't work with multer for some reason -->
+                    <input type="file" id="image" name="image" accept="image/*">
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="text" name="campgroundUpdateForm[description]" value="<%= campground.description%>">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" id="coordinatesLat" name="campgroundUpdateForm[lat]" placeholder="<%= campground.lat %>">
+                    <input class="form-control" type="text" id="coordinatesLat" name="campgroundUpdateForm[lat]" value="<%= campground.lat %>">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" id="coordinatesLng" name="campgroundUpdateForm[lng]" placeholder="<%= campground.lng %>">
+                    <input class="form-control" type="text" id="coordinatesLng" name="campgroundUpdateForm[lng]" value="<%= campground.lng %>">
                 </div>
                 <div class="form-group">
                     <div id='mapHigher'></div> 

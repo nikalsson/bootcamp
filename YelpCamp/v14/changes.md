@@ -65,8 +65,18 @@
 # v14
 - add user profile page, access from navbar or campground show page. Route still in index.js!
 - add password reset function using nodemailer and gmail
+- push to heroku
+
+
+Not in production version yet!
+- add fuzzy search feature to /campgrounds, 
+- add .env and .gitignore
+- change image uploads to Cloudinary service, input env variables to Heroku when pushing!
+- refactor the seeds.js with async function
 
 
 
 TO DO
+- add label fields to forms! (one in new campground form - image)
 - change user model pwd to required!
+- campgrounds edit route refactor

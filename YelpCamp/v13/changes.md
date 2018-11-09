@@ -59,3 +59,5 @@
 - add Mapbox, missing address reverse search from marker coordinates
 - add moment.js to add creation time to campgrounds and comments
 - add admin, isAdmin has to be toggled to user from mongo - can delete and edit all
+- hide access tokens
+- push to heroku

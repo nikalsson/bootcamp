@@ -9,8 +9,15 @@
             <p>View our hand-picked campgrounds from all over the world!</p>
             <p>
                 <a class="btn btn-primary btn-lg" href="campgrounds/new">Add a new campground</a>
+                <form action="/campgrounds" method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" name="search" placeholder="Campground name search" class="form-control input-lg">
+                        <input type="submit" value="Search" class="btn btn-default btn-lg">
+                    </div>
+                </form>
+                
             </p>
-        </div>    
+        </div>
     </header>
     
     <div class="row text-center" style="display: flex; flex-wrap: wrap;">
