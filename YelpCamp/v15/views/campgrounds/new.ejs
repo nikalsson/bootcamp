@@ -1,0 +1,83 @@
+<% include ../partials/header %>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+    <div class="row">
+        <h1 style="text-align: center;">Create a new campground</h1>
+        <div style="width: 50%; margin: 25px auto; ">
+            <form action="/campgrounds" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="NAME" name="name" >
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" placeholder="PRICE" name="price" min="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <!-- label for and input id class are connected! -->
+                    <label for="image">Image</label>
+                    <input class="form-control" type="file" id="image" name="image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="DESCRIPTION" name="description">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="coordinatesLat" placeholder="LATITUDE - GET COORDINATES USING THE MAP" name="lat">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="coordinatesLng" placeholder="LONGITUDE - FIND ADDRESS AND DRAG THE MARKER" name="lng">
+                </div>
+                <div class="form-group">
+                    <div id='mapHigher'></div> 
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
+                </div>
+            </form> 
+            <a href="/campgrounds">Go back to campgrounds</a>
+        </div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = '<%=process.env.MAPBOXACCESS%>';;
+        var map = new mapboxgl.Map({
+            container: 'mapHigher',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [0, 0],
+            zoom: 1
+        });
+        
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken
+        });
+        
+        map.addControl(geocoder);
+
+        // After looking up an address on the geocoder, create draggable marker that updates lngLat
+            map.on('load', function() {
+        
+            geocoder.on('result', function(ev) {
+
+                var marker = new mapboxgl.Marker({
+                    draggable: true
+                })
+                .setLngLat([ev.result.geometry.coordinates[0], ev.result.geometry.coordinates[1]])
+                .addTo(map);
+            
+                function onDragEnd() {
+                    var lngLat = marker.getLngLat();
+                    var lat = (parseFloat(lngLat.lat));
+                    var lng = (parseFloat(lngLat.lng));
+                    document.getElementById('coordinatesLat').value=lat;
+                    document.getElementById('coordinatesLng').value=lng;
+
+                }
+            
+            marker.on('dragend', onDragEnd);
+
+            
+            });
+        });
+    </script>
+
+<% include ../partials/footer %>

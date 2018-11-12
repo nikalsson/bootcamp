@@ -1,0 +1,41 @@
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+}
+
+.deleteForm {
+    display: inline-block;
+}
+
+.thumbnail .indexImage {
+    object-fit: cover;
+    overflow: scroll;
+    min-height: 300px;
+    height: 30vw; 
+    width : 100%;
+}
+
+#map {
+    height: 400px;
+}
+
+#mapHigher {
+    height: 500px;
+}
+
+.checked {
+    color: orange;
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1570px;
+    }
+}    

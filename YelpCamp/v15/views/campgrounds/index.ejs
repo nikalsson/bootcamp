@@ -1,0 +1,51 @@
+<% include ../partials/header %>
+
+
+
+    <header class="jumbotron">
+        <!-- Adding another container inside the jumbotron to give the text a bit of bumper on the edges of the page when resizing -->
+        <div class="container">
+            <h1>Welcome to YelpCamp</h1>
+            <p>View our hand-picked campgrounds from all over the world!</p>
+            <p>
+                <a class="btn btn-primary btn-lg" href="campgrounds/new">Add a new campground</a>
+                <form action="/campgrounds" method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" name="search" placeholder="Campground name search" class="form-control input-lg">
+                        <input type="submit" value="Search" class="btn btn-default btn-lg">
+                    </div>
+                </form>
+                
+            </p>
+        </div>
+    </header>
+    
+    <div class="row text-center" style="display: flex; flex-wrap: wrap;">
+        <!-- Loop through campgrounds array and display name and image of the array items -->
+        <% campgrounds.forEach(function(campground){ %>
+            <div class="col-md-4 col-sm-6">
+                <div class="thumbnail">
+                    <!-- Note that the source of image has to be in %% tags  -->
+                    <img class='indexImage' src="<%= campground.image %>">
+                    <div class="caption">
+                        <h4> <%= campground.name %> </h4>  
+                        <% if (campground.rating === 0) { %>
+                        <em>No reviews yet</em>
+                        <% } else { %>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star <% if (campground.rating > 1.5) { %> checked <% } %>"></span>
+                            <span class="fa fa-star <% if (campground.rating > 2.5) { %> checked <% } %>"></span>
+                            <span class="fa fa-star <% if (campground.rating > 3.5) { %> checked <% } %>"></span>
+                            <span class="fa fa-star <% if (campground.rating > 4.5) { %> checked <% } %>"></span>
+                        <% } %>
+                    </div>
+                    <p>
+                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Information</a>
+                    </p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+
+<% include ../partials/footer %>
