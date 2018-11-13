@@ -1,3 +1,11 @@
+.checked {
+    color: orange;
+}
+
+.deleteForm {
+    display: inline-block;
+}
+
 .thumbnail img {
     width: 100%;
 }
@@ -10,8 +18,12 @@
     padding: 9px;
 }
 
-.deleteForm {
-    display: inline-block;
+.thumbnail .campground_image {
+    object-fit: cover;
+    overflow: scroll;
+    height: 50vw;
+    max-height: 700px;
+    width : 100%;     
 }
 
 .thumbnail .indexImage {
@@ -22,19 +34,32 @@
     width : 100%;
 }
 
+.rating_stars_form {
+    padding-right: 14px;
+}
+
 #map {
     height: 400px;
+    margin-bottom: 20px;
 }
 
 #mapHigher {
     height: 500px;
 }
 
-.checked {
-    color: orange;
+.modal-body {
+    position: absolute;
+    padding: 0;
+    margin: 5%;
 }
 
-@media (min-width: 1600px) {
+#campground_image_modal img {
+    object-fit: contain;
+    padding: 0px;
+    max-width: 100%;
+}
+
+@media (min-width: 1600px) { /* Needed for XL screen size, bootstrap 3 doesn't support */
     .container {
         width: 1570px;
     }

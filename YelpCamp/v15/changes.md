@@ -77,6 +77,7 @@ e still in index.js!
 - add a review system
 - add & edit comments on the show page
 - change in comment model from createdAt to {timestamps: true}
+- add modal to zoom into campground picture
 
 
 
@@ -86,3 +87,4 @@ TO DO
 - campgrounds edit route refactor
 - show reviews on user profile page
 - show creation times & update times IF APPLICABLE, now showing only updatedAt
+- force comment to have text

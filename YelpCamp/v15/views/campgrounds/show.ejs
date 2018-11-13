@@ -4,17 +4,25 @@
         <div class="col-md-3">
             <p class="lead">YelpCamp</p>
             <div class="list-group">
-                <div class="list-group-item active">INFO PLACEHOLDER</div>
+                <div class="list-group-item active">Camp coordinates</div>
                 <div class="list-group-item">Latitude: <%= campground.lat %></div>
                 <div class="list-group-item">Longitude: <%= campground.lng %></div>
             </div>
             <div id='map'></div>
         </div>
         
+        <div class="modal fade" tabindex="-1" role="dialog" id="campground_image_modal">
+            <div class='modal-lg' role="document">
+                <div class="modal-body">
+                    <img class="campground_image" src="<%= campground.image %>">
+                </div>
+            </div>    
+        </div>
+        
         <!-- Campground information section -->
         <div class="col-md-9">
             <div class="thumbnail">
-                <img class="img-responsive" src="<%= campground.image %>">
+                <a data-toggle="modal" data-target="#campground_image_modal"><img class="campground_image" src="<%= campground.image %>"></a>
                 <div class="caption-full">
                     <h4 class="pull-right"><%= campground.price%> € / night</h4>
                     <h4><%= campground.name %></h4>
@@ -31,15 +39,89 @@
                     <% } %>
                 </div>
             </div>
-            
-        <!-- Review section -->
-            <div class="well">
+        
+        <!-- Review section start-->
+            <div class='well'>
+                <!-- Set up the add new review button that is used for collapsing -->
+                <div class='text-right'>
+                    <a class='btn btn-success pull-right' role='button' data-toggle='collapse' href='#collapseReview' aria-expanded='false' aria-controls='collapseReview'>
+                        <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add a new review</a>
+                </div>
+                
+                <!-- Review section title -->
+                <h4><strong>Reviews <span class='fa fa-star' aria-hidden='true'></span></strong></h4>
+
+                
+                <!-- Collapse add a review form START-->
+                <div class='collapse' id='collapseReview'>
+                    <div class='well' style='border-left: 5px solid #00C851;'>
+                        <!-- If the user is not logged in, direct to login page -->
+                        <% if(!currentUser) { %>
+                            <h5> You need to login before you can leave a review. <a href='/login'>Click here to login.</a></h5>
+                        <% } %>
+                        
+                         <!-- If there is a user logged in, show the new review form -->
+                        <% if (currentUser) { %>
+                            <h4>Write your review <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></h4>
+                            <form id='add-review-form' action="/campgrounds/<%= campground._id %>/reviews" method="POST">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" disabled value='<%= currentUser.username %>'>
+                                    <label for='rating'>Leave a rating:</label>
+                                    <fieldset class='starability-basic form-group form-horizontal' id='rating'>
+                                        <span class='rating_stars_form'>
+                                            <input type='radio' id='first-rate5' name='review[rating]' value='5' checked />
+                                            <label for='first-rate5' title='5 stars - amazing'>
+                                                <%- '<span class="fa fa-star checked"></span>'.repeat(5) %>
+                                            </label>
+                                        </span>
+                                        <span class='rating_stars_form'>
+                                            <input type='radio' id='first-rate4' name='review[rating]' value='4' checked />
+                                            <label for='first-rate4' title='4 stars - very good'>
+                                                <%- '<span class="fa fa-star checked"></span>'.repeat(4) %>
+                                            </label>
+                                        </span>
+                                        <span class='rating_stars_form'>
+                                            <input type='radio' id='first-rate3' name='review[rating]' value='3' checked />
+                                            <label for='first-rate3' title='3 stars - average'>
+                                                <%- '<span class="fa fa-star checked"></span>'.repeat(3) %>
+                                            </label>
+                                        </span>
+                                        <span class='rating_stars_form'>
+                                            <input type='radio' id='first-rate2' name='review[rating]' value='2' checked />
+                                            <label for='first-rate2' title='2 stars - poor'>
+                                                <%- '<span class="fa fa-star checked"></span>'.repeat(2) %>
+                                            </label>
+                                        </span>
+                                        <span>
+                                            <input type='radio' id='first-rate1' name='review[rating]' value='1' checked />
+                                            <label for='first-rate1' title='1 stars - terrible'>
+                                                <%- '<span class="fa fa-star checked"></span>'.repeat(1) %>
+                                            </label>
+                                        </span>
+                                    </fieldset>
+                                </div> <!-- form-group for star rating END -->
+                                
+                                <div class="form-group">
+                                    <textarea class="form-control" name="review[text]" placeholder="Write your review here." form='add-review-form' rows='5' cols='70'></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-success btn-primary">Submit <span class='fa fa-star' aria-hidden='true'></span></button>
+                                </div>
+                            </form>
+                        <% } %> <!-- if(currentUser) END -->
+                    </div>
+                </div>
+                <!-- Collapse add review form END --> 
+                
+                <hr>
+                
                 <div class="caption-full">
                     <% if (campground.rating === 0) { %>
                     <h5>
                         <em>No reviews yet</em>
                     </h5>
                     <% } else { %>
+                        <!-- Show the average rating if ratings exist -->
                         <p>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star <% if (campground.rating > 1.5) { %> checked <% } %>"></span>
@@ -59,37 +141,95 @@
                             <div class="row">
                                 <div class='col-md-3'>
                                     <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                                    
+                                    <!-- Print out the author username -->
                                     <div>Review by: <strong><%= review.author.username %></strong></div>
+                                    
+                                    <!-- Print out when the comment was made or updated -->
                                     <span><em><%= moment(review.updatedAt).fromNow() %></em></span>
                                 </div>
                                 <div class="col-md-9">
                                     <p style="text-align: justify; word-wrap: break-word;">
                                         <%= review.text %>
                                     </p>
+                                    
+                                    <!-- Check if there is a user logged in and if the user id equals review owner's id ==> display edit and delete buttons -->
                                     <% if(currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
-                                    <a class="btn btn-xs btn-warning"
-                                       href="/campgrounds/<%=campground._id %>/reviews/<%=review._id %>/edit">Edit review</a>
-                                    <form class="deleteForm pull-right" action="/campgrounds/<%=campground._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                    <a class="btn btn-xs btn-warning" role='button' data-toggle='collapse' href='#collapseEdit<%= review._id %>' aria-expanded='false' aria-controls='collapse<%= review._id %>'>
+                                        Edit review
+                                    </a>
+                                    
+                                    <form class="deleteForm pull-right" action="/campgrounds/<%=campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                                         <input type="submit" class="btn btn-xs btn-danger" value="Delete review">
                                     </form>
+                                    
+                                    <!--Edit comment form START -->
+                                    <div class='collapse' id='collapseEdit<%= review._id %>'>
+                                        <div class='well' style='border-left: 5px solid #ffbb33; margin-top: 15px;'>
+                                            <h4>Edit your review <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></h4>
+                                            <form id='edit-review-form' action='/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=PUT' method='POST'>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" disabled value='<%= currentUser.username %>'>
+                                                    <label for='rating'>Leave a rating:</label>
+                                                    <fieldset class='starability-basic form-group form-horizontal' id='rating'>
+                                                        <span class='rating_stars_form'>
+                                                            <input type='radio' id='first-rate5' name="review[rating]" value="5" <% if (review.rating === 5) { %> checked <% } %> />
+                                                            <label for='first-rate5' title='5 stars - amazing'>
+                                                                <%- '<span class="fa fa-star checked"></span>'.repeat(5) %>
+                                                            </label>
+                                                        </span>
+                                                        <span class='rating_stars_form'>
+                                                            <input type='radio' id='first-rate4' name="review[rating]" value="4" <% if (review.rating === 4) { %> checked <% } %> />
+                                                            <label for='first-rate4' title='4 stars - very good'>
+                                                                <%- '<span class="fa fa-star checked"></span>'.repeat(4) %>
+                                                            </label>
+                                                        </span>
+                                                        <span class='rating_stars_form'>
+                                                            <input type='radio' id='first-rate3' name="review[rating]" value="3" <% if (review.rating === 3) { %> checked <% } %> />
+                                                            <label for='first-rate3' title='3 stars - average'>
+                                                                <%- '<span class="fa fa-star checked"></span>'.repeat(3) %>
+                                                            </label>
+                                                        </span>
+                                                        <span class='rating_stars_form'>
+                                                            <input type='radio' id='first-rate2' name="review[rating]" value="2" <% if (review.rating === 2) { %> checked <% } %> />
+                                                            <label for='first-rate2' title='2 stars - poor'>
+                                                                <%- '<span class="fa fa-star checked"></span>'.repeat(2) %>
+                                                            </label>
+                                                        </span>
+                                                        <span>
+                                                            <input type='radio' id='first-rate1' name="review[rating]" value="1" <% if (review.rating === 1) { %> checked <% } %> />
+                                                            <label for='first-rate1' title='1 stars - terrible'>
+                                                                <%- '<span class="fa fa-star checked"></span>'.repeat(1) %>
+                                                            </label>
+                                                        </span>
+                                                        
+                                                        <div class="form-group">
+                                                            <textarea class="form-control" name="review[text]" form='edit-review-form' rows="5"><%= review.text %></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button class="btn btn-sm btn-warning btn-primary">Submit <span class='fa fa-star' aria-hidden='true'></span></button>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </form>    
+                                        </div>
+                                    </div>
+                                    <!-- form-group for edit review END -->
                                     <% } %>
                                 </div>
-                            </div>    
-                            <hr>
-                            <% }); %>
-                            
-                        <div class="text-center">
-                            <div style="margin-bottom: 10px;">
-                                <h4><a href="/campgrounds/<%= campground._id %>/reviews"><i class="fa fa-search" aria-hidden="true"></i> See all reviews</a></h4>
                             </div>
-                        </div>
-                        <% } %>
-                        <div class="text-center">
-                            <a class="btn btn-primary btn-md" href="/campgrounds/<%= campground._id %>/reviews/new">
-                                Write a new review</a>
-                        </div>
+                            <% }); %>
+                            <!--Edit comment form END-->
+                            
+                            <div class="text-center">
+                                <div style="margin-bottom: 10px;">
+                                    <h4><a href="/campgrounds/<%= campground._id %>/reviews"><i class="fa fa-search" aria-hidden="true"></i> See all reviews</a></h4>
+                                </div>
+                            </div>
+                            <% } %>
                 </div>
-            </div>   
+            </div>
+            <!-- Review section END --> 
         
             <!-- Comment section start-->
             <div class='well'>
@@ -121,7 +261,7 @@
                                     <textarea class="form-control" name="comment[text]" placeholder="Write your comment here." form='add-comment-form' rows='5' cols='70'></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-sm btn-success btn-primary">Comment <span class='glyphicon glyphicon-comment' aria-hidden='true'></span></button>
+                                    <button class="btn btn-sm btn-success btn-primary">Submit <span class='glyphicon glyphicon-comment' aria-hidden='true'></span></button>
                                 </div>
                             </form>
                         <% } %>
@@ -178,7 +318,7 @@
                                                 <textarea class="form-control" name="comment[text]" form='edit-comment-form' rows='5' cols='70'><%= comment.text %></textarea>
                                             </div>
                                             <div class="form-group">
-                                                <button class="btn btn-sm btn-warning btn-primary">Edit comment <span class='glyphicon glyphicon-comment' aria-hidden='true'></span></button>
+                                                <button class="btn btn-sm btn-warning btn-primary">Submit <span class='glyphicon glyphicon-comment' aria-hidden='true'></span></button>
                                             </div>
                                         </form>
                                     </div>
@@ -201,6 +341,9 @@
 
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+
+
 
 
 <script>
@@ -230,3 +373,4 @@ var marker = new mapboxgl.Marker()
 </script>
 
 <% include ../partials/footer %>
+
