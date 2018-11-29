@@ -1,0 +1,15 @@
+body {
+  padding-top: 80px;
+}
+
+.navbar-brand {
+  float: none;
+}
+
+#edit-todo-form {
+  display: none;
+}
+
+#new-todo-form {
+  display: none;
+}
