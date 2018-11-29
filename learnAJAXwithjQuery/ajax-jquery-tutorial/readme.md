@@ -1,3 +1,5 @@
+THIS IS A FORK FROM AJAX JQUERY TUTORIAL, ORIGINAL INFO BELOW
+
 # Setup Instructions
 
 - Paste the following into your terminal - `git clone git@github.com:nax3t/ajax-jquery-tutorial.git`
