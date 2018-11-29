@@ -8,7 +8,6 @@ var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 
 // instead of using app. use router. to export the routes to app.js
-
 // Root route
 router.get("/", function(req, res){
     res.render("landing");
@@ -68,8 +67,6 @@ router.get('/logout', function(req, res){
 router.get('/forgot', function(req, res){
     res.render('forgot');
 });
-
-
 
 router.post('/forgot', function(req, res, next){
     async.waterfall([

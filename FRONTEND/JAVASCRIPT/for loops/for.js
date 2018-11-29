@@ -46,3 +46,15 @@ for(var i = numbers[0]; i <= numbers.length; i++) {
 		console.log(i);
 	}
 }	
+
+// Age difference
+// When my father was 31 years old, I was 8 years old, but now my father is two times older than me. How old am I now?
+
+
+var fatherAtBorn = 31-8;
+console.log(fatherAtBorn);
+for (var myAge = 0;  myAge <=  0.5 * fatherAtBorn; myAge++, fatherAtBorn++) {
+	console.log(`My age is ${myAge}`);
+	console.log(`My father's age is ${fatherAtBorn}`);
+	console.log(`The ratio of our age is ${fatherAtBorn / myAge}`);
+}

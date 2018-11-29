@@ -47,5 +47,57 @@
         <% }); %>
     </div>
 
+    <!-- Show pagination on the page -->
+    <div class='row text-center'>
+        <% if (pages && pages > 0) { %>
+            <ul class='pagination text-center'>
+                <!-- If on the first page, cannot go to first page -->
+                <% if (current == 1) { %> <!-- current, page number-->
+                    <li class'disabled'><a>First</a></li>
+                <% } else { %>
+                    <li><a href='/campgrounds<%if(search){%>?search=<%=search%><%}%>'>First</a></li>
+                <% } %>
+                
+                <!-- If on the first page, cannot go back in pagination -->
+                <% if (current == 1) { %>
+                    <li class'disabled'><a>«</a></li>
+                <% } else { %>    
+                    <li><a href='/campgrounds?page=<%= Number(current) - 1 %><%if(search){%>&search=<%=search%><%}%>'>«</a></li>
+                <% } %>
+                
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class'disabled'><a>...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <li class='active'><a><%= i %></a></li>
+                    <% } else { %>
+                        <li><a href='/campgrounds?page=<%= i %><%if(search){%>&search=<%=search%><%}%>'><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <li class'disabled'><a>...</a></li>
+                    <% } %>
+                <% } %>
+                
+                <!-- If on the last page, cannot go forward in pagination -->
+                <% if (current == pages) { %>
+                    <li class'disabled'><a>»</a></li>
+                <% } else { %>    
+                    <li><a href='/campgrounds?page=<%= Number(current) + 1 %><%if(search){%>&search=<%=search%><%}%>'>»</a></li>
+                <% } %>
+                
+                
+                
+                <!-- If on the last page, cannot go to last page -->
+                <% if (current == pages) { %> <!-- current, page number-->
+                    <li class'disabled'><a>Last</a></li>
+                <% } else { %>
+                    <li><a href='/campgrounds?page=<% pages %><%if(search){%>&search=<%=search%><%}%>'>Last</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+    </div>
+    <!--End of pagination-->
 
 <% include ../partials/footer %>

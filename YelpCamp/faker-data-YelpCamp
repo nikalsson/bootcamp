@@ -1,0 +1,82 @@
+var faker = require('faker');
+
+// For generating random users, no passwords!
+router.get('/generate-fake-data', function(req, res, next) {
+    for (var i = 0; i < 90; i++) {
+        var user = new User()
+        user.username = faker.internet.userName()
+        user.password = faker.internet.password()
+        user.firstname = faker.name.firstName()
+        user.lastname = faker.name.lastName()
+        user.email = faker.internet.email()
+        user.avatar = faker.image.image()
+        user.isAdmin = false
+        
+        user.save(function(err) {
+            if (err) throw (err)
+        })
+    console.log(`Added ${i} user`)    
+    }
+})
+
+// For generating random campgrounds
+router.get('/generate-fake-data', function(req, res, next) {
+    for (var i = 0; i < 90; i++) {
+        var camp = new Campground()
+        
+        camp.name =  faker.address.city()
+        camp.price = Math.floor(Math.random()*10)
+        camp.image = faker.image.nature()
+        // camp.imageId = String,
+        camp.description = faker.lorem.paragraph()
+        camp.lat = faker.address.latitude()
+        camp.lng = faker.address.longitude()
+        camp.comments = []
+        camp.author =   
+        // can log a random user but how to retrieve the ID and username?
+        // function randomUser() {
+        //                     // Get the count of all users
+        //                     User.count().exec(function (err, count) {
+        //                         // Get a random entry
+        //                         var random = Math.floor(Math.random() * count)
+        //                         // Again query all users but only fetch one offset by our random #
+        //                         User.findOne().skip(random).exec(
+        //                             function (err, result) {
+                                    
+        //                         // Tada! random user
+        //                         console.log(result)
+                                
+        //                         })
+        //                     })
+        //                 }
+        camp.reviews = []
+        camp.rating = []
+        camp.timestamps = true
+
+        camp.save(function(err) {
+            if (err) throw (err)
+        })
+    console.log(`Added ${i} camps`)    
+    }
+})
+
+
+    
+    
+    
+    
+    
+//     {
+//         var product = new Product()
+
+//         product.category = faker.commerce.department()
+//         product.name = faker.commerce.productName()
+//         product.price = faker.commerce.price()
+//         product.cover = faker.image.image()
+
+//         product.save(function(err) {
+//             if (err) throw err
+//         })
+//     }
+//     res.redirect('/add-product')
+// })

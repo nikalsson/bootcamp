@@ -64,8 +64,6 @@
 
 # v14
 - add user profile page, access from navbar or campground show page. RoutWe end the comment section refactor by adding the edit comment and delete comment buttons.
-
-e still in index.js!
 - add password reset function using nodemailer and gmail
 - push to heroku
 - add fuzzy search feature to /campgrounds, 
@@ -79,6 +77,8 @@ e still in index.js!
 - change in comment model from createdAt to {timestamps: true}
 - add modal to zoom into campground picture
 
+/ not in prod yet
+pagination on the index pages
 
 
 TO DO
