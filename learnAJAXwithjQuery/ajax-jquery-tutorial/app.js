@@ -18,23 +18,44 @@ var todoSchema = new mongoose.Schema({
 
 var Todo = mongoose.model("Todo", todoSchema);
 
+// function to be used in the .get("/todos", ..) route
+// this allows us to escape any special characters with a backslash
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
+
 app.get("/", function(req, res){
   res.redirect("/todos");
 });
 
 app.get("/todos", function(req, res){
-  Todo.find({}, function(err, todos){
-    if(err){
-        res.redirect("/");
-        console.log(err);
+    if(req.query.keyword) { // if there is a query string called keyword
+        const regex = new RegExp(escapeRegex(req.query.keyword), 'gi'); // set the constant (variable) regex equal to a new regular expression created from the keyword that we pulled from the query string
+        // query the database for Todos with text property that match the regular expression version of the search keyword
+        Todo.find({ text: regex }, function(err, todos){
+            if(err){
+                res.redirect("/");
+                console.log(err);
+            } else {
+                // send back the found todos as JSON
+                res.json(todos);
+            }
+        });    
     } else {
-        if (req.xhr) { // if the request was made in XMLHttpRequest
-            res.json(todos); // send the response as JSON
-        } else {
-            res.render("index", {todos: todos}); 
-        }    
+        // if there is no query string keyword, show all todos
+        Todo.find({}, function(err, todos){
+            if(err){
+                console.log(err);
+            } else {
+                if (req.xhr) { // if the request was made in XMLHttpRequest
+                    res.json(todos); // send the response as JSON
+                } else {
+                    res.render("index", {todos: todos}); 
+                }    
+            }
+        });
     }
-  })
 });
 
 app.post("/todos", function(req, res){

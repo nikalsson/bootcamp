@@ -86,7 +86,7 @@ $('#todo-list').on('submit', '#edit-todo-form', function(event){
      });
 });
 
-// // delete an existing todo
+// delete an existing todo
 $('#todo-list').on('submit', '.delete-todo-form', function(e){
     event.preventDefault();
     var confirmDelete = confirm('Are you sure?');
@@ -105,3 +105,39 @@ $('#todo-list').on('submit', '.delete-todo-form', function(e){
         $(this).find('button').blur() // find a button in the form 'this' and blur it if cancel
     }
 })
+
+// search functionality
+$('#search').on('input', function(e){
+    e.preventDefault();
+    $.get(`/todos?keyword=${encodeURIComponent(e.target.value)}`, function(data) {
+        $('#todo-list').html('');
+        data.forEach(function(todo){
+            $('#todo-list').append(
+                `
+                <li class="list-group-item">
+                	<!-- EDIT FORM START-->
+        			<form action="/todos/${todo._id}" method="POST" id="edit-todo-form">
+        				<div class="form-group">
+        					<label for="${todo._id}">Item Text</label>
+        					<input type="text" value="${todo.text}" name="todo[text]" class="form-control" id="${todo._id}">
+        				</div>
+        				<button class="btn btn-primary">Update Item</button>
+        			</form>
+        			<!-- EDIT FORM END -->
+        	
+        			<span class="lead">
+        				${todo.text}
+        			</span>
+        			<div class="pull-right">
+        				<button class="btn btn-sm btn-warning edit-button">Edit</button>
+        				<form style="display: inline" method="POST" action="/todos/${todo._id}" class="delete-todo-form">
+        					<button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        				</form>
+        			</div>
+        			<div class="clearfix"></div>
+        		</li>	
+                `
+            );
+        });
+    });
+});
