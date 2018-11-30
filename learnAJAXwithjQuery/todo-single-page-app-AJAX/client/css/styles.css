@@ -1,0 +1,12 @@
+body {
+  padding-top: 80px;
+}
+
+#edit-todo-form {
+  display: none;
+}
+
+#new-todo-form {
+  display: none;
+  padding-top: 20px;
+}
